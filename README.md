@@ -77,6 +77,37 @@ Dans le script, rechercher FOLDER_ID et y coller la nouvelle valeur.(vous devez 
 Enregistrer, puis fermer l’onglet 
 Par sécurité, fermer aussi le document et le rouvrir avant première execution de du script..
 
+V2.0
+
+Nouveaux besoins : 
+ > Prise en compte du transfert vers les 4 fichiers la nouvelle colonne “commentaire” du formulaire correspondante (une dédiée à chaque service relai pour  assurer la confidentialité)
+ > Afin de permettre aux coordinateurs de secteur de suivre l’évolution de l’appel des bénévoles de son secteur, il est demandé à ce qu’ils disposent d’une vue, via un fichier google sheet mis à jour régulièrement de l’ensemble des bénévoles qui ont été appelés.
+ 
+Modifications : la version v2.0 prends en compte le premier besoin par ajout simple de la copie du commentaire (colonne I, P, Q ou R de l’onglet source) vers la colonne L de l’onglet relais correspondant. Pour le second besoin a été ajouté un second script indépendant décrit ci-dessous.
+
+Comportement du second script : il se nomme “mise à jour des fichiers secteurs” et procède selon la logique suivante :
+Il parcourt depuis le début jusqu’à la fin les lignes du fichier source technique,
+Pour chaque il lit la valeur du statut
+Si “0” (personne non appelée) ou “2” (nom déjà transféré), aucune action
+Si l“1”, c’est qu’il doit transférer le nom : 
+Il prend alors connaissance du secteur associé, 
+Il ouvre le fichier secteur en question, 
+Il lance un deuxième parcours depuis cette ligne jusqu’à la fin du fichier,
+A chaque nom trouvé présentant la valeur statut = “1” et le SECTEUR en question, il procède au transfert de du nom dans le fichier secteur.
+Une fois la copie effectuée avec succès, il modifie le statut à “2”
+Retour à la boucle principale à la recherche d’éventuels autres statut = “1”
+Si des noms sont détectés “à transférer” (statut = 1) avec le secteur = “sans secteur”; ils seront transférés vers le fichier “sans secteur”.
+Si des noms sont détectés “à transférer” (statut = 1) avec un secteur non renseignés, ils ne seront pas traités et listés en fin d'exécution dans le rapport.
+ 
+Notes :
+Les onglets de chaque fichier secteur doivent s’appeler de la même manière “liste à contacter”..
+Le nom des fichiers secteurs doivent correspondre exactement au nom du secteur indiqué dans l’onglet “source technique”
+
+Notes complémentaires :
+La fonction initiale “Mise à jour automatique” a été renommée en “mise à jour des fichiers relais pôles”.
+L'exécution automatique au lancement a été désactivée.
+
+
 
 
 
